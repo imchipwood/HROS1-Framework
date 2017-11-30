@@ -34,6 +34,8 @@ namespace Robot
 			static double RL_GYRO;
 			static int FB_ACCEL;
 			static int RL_ACCEL;
+			static int FB_MAG;
+			static int RL_MAG;
 
 			static double ANGLE_PITCH;  //!< pitch angle in radians
 			static double ANGLE_ROLL;   //!< roll angle in radians

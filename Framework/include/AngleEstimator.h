@@ -5,6 +5,8 @@
 #define ANGLEESTIMATOR_H
 #include <string>
 
+// TODO: Add magnetometer
+
 class minIni;
 class AngleEstimator
 {

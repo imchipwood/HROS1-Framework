@@ -208,7 +208,7 @@ void MotionManager::Process()
         return;
 
     m_IsRunning = true;
-
+    // TODO: Add magnetometer
     // calibrate gyro sensor
     if (m_CalibrationStatus == 0 || m_CalibrationStatus == -1)
         {

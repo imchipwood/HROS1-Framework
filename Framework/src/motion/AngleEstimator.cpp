@@ -6,6 +6,8 @@
 
 #include <math.h>
 
+// TODO: Add magnetometer
+
 AngleEstimator::AngleEstimator()
 	: m_acc_gain(0.01)
 	, m_acc_smooth_decay(0.01)

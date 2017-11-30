@@ -20,6 +20,8 @@
 #define OFFSET_SECTION "Offset"
 #define INVALID_VALUE   -1024.0
 
+// TODO: Add magnetometer
+
 namespace Robot
 {
 	class MotionManager
