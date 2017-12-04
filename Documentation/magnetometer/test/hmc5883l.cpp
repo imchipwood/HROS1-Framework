@@ -236,6 +236,44 @@ void HMC5883L::calibrate() {
     printf("y: %d, %d\n", minY, maxY);
     printf("z: %d, %d\n", minZ, maxZ);
 }
+//
+//void HMC5883L::LoadINISettings(minIni* ini) {
+//    LoadINISettings(ini, HMC5883L_SECTION);
+//}
+//
+//void HMC5883L::LoadINISettings(minIni* ini, const std::string &section) {
+//    double value = INVALID_VALUE;
+//
+//    if ((value = ini->getd(section, "minX", INVALID_VALUE)) != INVALID_VALUE)
+//        minX = value;
+//    if ((value = ini->getd(section, "maxX", INVALID_VALUE)) != INVALID_VALUE)
+//        maxX = value;
+//
+//    if ((value = ini->getd(section, "minY", INVALID_VALUE)) != INVALID_VALUE)
+//        minY = value;
+//    if ((value = ini->getd(section, "maxY", INVALID_VALUE)) != INVALID_VALUE)
+//        maxY = value;
+//
+//    if ((value = ini->getd(section, "minZ", INVALID_VALUE)) != INVALID_VALUE)
+//        minZ = value;
+//    if ((value = ini->getd(section, "maxZ", INVALID_VALUE)) != INVALID_VALUE)
+//        maxZ = value;
+//}
+//
+//void HMC5883L::SaveINISettings(minIni* ini) {
+//    SaveINISettings(ini, HMC5883L_SECTION);
+//}
+//
+//void HMC5883L::SaveINISettings(minIni* ini, const std::string &section) {
+//    ini->put(section, "minX", minX);
+//    ini->put(section, "maxX", maxX);
+//
+//    ini->put(section, "minY", minY);
+//    ini->put(section, "maxY", maxY);
+//
+//    ini->put(section, "minZ", minZ);
+//    ini->put(section, "maxZ", maxZ);
+//}
 
 // Main program
 int main(int argc, char **argv)

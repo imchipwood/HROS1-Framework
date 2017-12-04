@@ -2,6 +2,14 @@
 #ifndef _HMC5883L_H_
 #define _HMC5883L_H_
 
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <fcntl.h>
+//#include <string.h>
+//#include <sys/types.h>
+//#include <sys/stat.h>
+//#include "minIni.h"
+
 #ifndef M_PI
     #define M_PI 3.14159265358979323846
 #endif
@@ -14,12 +22,8 @@
     #define HMC5883L_I2C_ADDR 0x1E
 #endif
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
+#define HMC5883L_SECTION "Walking Config"
+#define INVALID_VALUE   -1024.0
 
 namespace Robot
 {
@@ -49,6 +53,11 @@ namespace Robot
 
             void updateData();
             void calibrate();
+
+			//void LoadINISettings(minIni* ini);
+			//void LoadINISettings(minIni* ini, const std::string &section);
+			//void SaveINISettings(minIni* ini);
+			//void SaveINISettings(minIni* ini, const std::string &section);
 
         private:
             static HMC5883L* m_UniqueInstance;
