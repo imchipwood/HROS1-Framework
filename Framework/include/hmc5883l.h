@@ -41,12 +41,12 @@ namespace Robot
             float getHeadingMinutes();
 
             // Default scaling values based on calibration done on Dec 3, 2017
-            static const short minX = -566;
-            static const short maxX =  651;
-            static const short minY = -685;
-            static const short maxY =  526;
-            static const short minZ = -447;
-            static const short maxZ =  684;
+            short minX = -566;
+            short maxX =  651;
+            short minY = -685;
+            short maxY =  526;
+            short minZ = -447;
+            short maxZ =  684;
 
             void initializeHMC5883L();
 
