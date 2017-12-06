@@ -41,12 +41,12 @@ namespace Robot
             float getHeadingMinutes();
 
             // Default scaling values based on calibration done on Dec 3, 2017
-            short minX = -566;
-            short maxX =  651;
-            short minY = -685;
-            short maxY =  526;
-            short minZ = -447;
-            short maxZ =  684;
+            short minX;
+            short maxX;
+            short minY;
+            short maxY;
+            short minZ;
+            short maxZ;
 
             void initializeHMC5883L();
 

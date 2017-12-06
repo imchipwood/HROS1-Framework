@@ -28,6 +28,16 @@ using namespace Robot;
 
 HMC5883L* HMC5883L::m_UniqueInstance = new HMC5883L();
 
+HMC5883L::HMC5883L() :
+{
+    minX = -566;
+    maxX =  651;
+    minY = -685;
+    maxY =  526;
+    minZ = -447;
+    maxZ =  684;
+}
+
 HMC5883L::~HMC5883L()
 {
 }
