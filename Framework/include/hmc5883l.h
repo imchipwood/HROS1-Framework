@@ -76,12 +76,12 @@ namespace Robot
 
             // Default scaling values based on calibration done on Dec 3, 2017
 
-            short minX = -566;
-            short maxX =  651;
-            short minY = -685;
-            short maxY =  526;
-            short minZ = -447;
-            short maxZ =  684;
+            static short minX = -566;
+            static short maxX =  651;
+            static short minY = -685;
+            static short maxY =  526;
+            static short minZ = -447;
+            static short maxZ =  684;
 
             float angle;
 
