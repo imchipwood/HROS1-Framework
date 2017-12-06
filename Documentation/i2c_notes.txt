@@ -1,0 +1,13 @@
+I2C pins on STM32F104:
+
+I2C pins
+
+I2C - STM32F104 - Arbotix Pro
+SCL - PB10      - PC_TXD
+SDA - PB11      - PC_RXD
+
+These pins double as USART3 TX/RX pins.
+
+Sadly, they are used to communicate with the FT232 USB driver...
+
+NO I2C AVAILABLE ON ARBOTIX PRO :(

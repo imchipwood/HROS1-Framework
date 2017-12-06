@@ -33,7 +33,8 @@ OBJS =  ../../Framework/src/ArbotixPro.o     	\
 		../../Framework/src/motion/AngleEstimator.o \
         ../../Framework/src/motion/modules/Action.o \
         ../../Framework/src/motion/modules/Head.o   \
-        ../../Framework/src/motion/modules/Walking.o\
+        ../../Framework/src/motion/modules/Walking.o \
+        ../../Framework/src/motion/hmc5883l.o \
         ../../Framework/src/vision/BallFollower.o   \
         ../../Framework/src/vision/PS3BallFollower.o   \
         ../../Framework/src/vision/LineFollower.o   \
