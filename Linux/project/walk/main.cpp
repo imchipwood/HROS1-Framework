@@ -203,6 +203,10 @@ int main(int argc, char *argv[])
 		prev_page = input2;
 		motion(input2);
 		break;
+			
+			case 0:
+				exit(0);
+				break;
 
             default:
 		printf("invalid input\n");
