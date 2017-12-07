@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "hmc5883l.h"
+#include "../../../Framework/include/hmc5883l.h"
 
 // Main program
 
