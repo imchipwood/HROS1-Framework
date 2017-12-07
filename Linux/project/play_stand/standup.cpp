@@ -20,7 +20,6 @@ bool bEdited = false;
 int indexPage = 1;
 Action::PAGE Page;
 Action::STEP Step;
-//extern LinuxMotionTimer linuxMotionTimer;
 
 // pages for standup motions
 #define STANDUP_FACE 10
@@ -126,11 +125,4 @@ void stand_up(int direction)
         // TODO: play command for standing from on back
         motion(STANDUP_BACK)
     }
-}
-
-int laying_down(void)
-{
-    // TODO: Check if we're laying down
-    int state = UPRIGHT;
-    return state;
 }
