@@ -18,15 +18,16 @@
 	Commands (param interpretation):	
 	1 Walk 			(seconds to walk for)
 	2 Turn			(degrees to turn)
-	3 Play Motion 	(page of motion in rme)
-	4 Sleep 		(milliseconds to sleep for)
-	5 Play MP3		**not developed yet
-	6 Send Midi		**not developed yet
-	7 Exit			*no param needed. Exit program
+	3 Turn Compass  (absolute degrees to turn to)
+	4 Play Motion 	(page of motion in rme)
+	5 Sleep 		(milliseconds to sleep for)
+	6 Play MP3		**not developed yet
+	7 Send Midi		**not developed yet
+	8 Exit			*no param needed. Exit program
 	
 	To be used for Portland Cyber Show.
 	
-	Updated: 10-14-2017
+	Updated: 12-6-2017
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -224,7 +225,6 @@ void turnCompass(int degrees_to_turn)
     float initial_heading = floor(compass.getHeadingDegrees());
     float current_heading = initial_heading;
 
-
     float target_heading = degrees_to_turn;
 
     // Direction to turn based on input degrees
@@ -417,25 +417,35 @@ int main(int argc, char *argv[])
 					turn(input2);
 					break;
 
-				case 3: // Play RME page
+				case 3: // Turning to absolute degrees
+					if(prev_page != 8)
+					{
+						prev_page = 8;
+						motion(8);
+					}
+
+					turnCompass(input2);
+					break;
+
+				case 4: // Play RME page
 					prev_page = input2;
 					motion(input2);
 					break;
 					
-				case 4: // Sleep
+				case 5: // Sleep
 					printf("Sleeping...\t");
 					usleep(input2*1000);
 					printf("Done.\n");
 					break;	
 				
-				case 5: // Play MP3
+				case 6: // Play MP3
 					printf("MP3 Function not developed yet.\n");
 					break;
 					
-				case 6: // Send Midi
+				case 7: // Send Midi
 					printf("Midi Function not developed yet.\n");
 					
-				case 7: // End of Script, off
+				case 8: // End of Script, off
 					printf("End of Script.\n");
 					script.close();
 					break;
