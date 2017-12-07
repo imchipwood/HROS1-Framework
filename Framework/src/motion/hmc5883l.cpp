@@ -29,6 +29,7 @@ using namespace Robot;
 HMC5883L* HMC5883L::m_UniqueInstance = new HMC5883L();
 
 HMC5883L::HMC5883L() :
+    // Default scaling values based on calibration done on Dec 3, 2017
     minX(-566),
     maxX( 651),
     minY(-685),

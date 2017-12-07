@@ -40,14 +40,6 @@ namespace Robot
             float getHeadingDegrees();
             float getHeadingMinutes();
 
-            // Default scaling values based on calibration done on Dec 3, 2017
-            short minX;
-            short maxX;
-            short minY;
-            short maxY;
-            short minZ;
-            short maxZ;
-
             void initializeHMC5883L();
 
             void updateActualHeading(float roll, float pitch);
@@ -76,6 +68,13 @@ namespace Robot
             float scaledX;
             float scaledY;
             float scaledZ;
+
+            short minX;
+            short maxX;
+            short minY;
+            short maxY;
+            short minZ;
+            short maxZ;
 
             float heading; // radians
             float minutes;
