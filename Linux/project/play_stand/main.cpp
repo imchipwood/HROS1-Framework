@@ -95,20 +95,21 @@ void walk(int direction, int second){
     for (int i = 0; i < second * 1000000; i = i + 10000) {
         if (MotionStatus::FALLEN != STANDUP) {
             Walking::GetInstance()->Stop();
-            usleep(10000);
+            usleep(10 * 1000);
             cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
             stand_up(MotionStatus::FALLEN);
-            usleep(10000);
+            usleep(10 * 1000);
             Walking::GetInstance()->Start();
         }
-        usleep(100000);
+        usleep(100 * 1000);
     }
 
     Walking::GetInstance()->Stop();
     Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
     Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
     Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
-    usleep(1000000);
+    // sleep 1s
+    usleep(1000 * 1000);
     MotionManager::GetInstance()->SetEnable(false);
     MotionManager::GetInstance()->RemoveModule((MotionModule*)Walking::GetInstance());
     linuxMotionTimer.Stop();
@@ -118,29 +119,30 @@ void walk(int direction, int second){
 
 void turn(int degrees_to_turn)
 {
-
-//    printf("turning...\t");
     cout << "Turning...\n";
 
+    // get current compass heading
     compass.updateData();
-    float initial_degrees = floor(compass.getHeadingDegrees());
-    float current_degrees = initial_degrees;
+    float initial_heading = floor(compass.getHeadingDegrees());
+    float current_heading = initial_heading;
 
-    int direction = -1;
+    // Direction to turn based on input degrees
+    int direction = 1;   // clockwise (degrees increasing)
     if (degrees_to_turn < 0) {
-        direction = 1;
+        direction = -1;  // counterclockwise (degrees decreasing)
     }
 
-    // figure out target degrees
-    float target_degrees = current_degrees + degrees_to_turn;
-    if (target_degrees < 0) {
-        target_degrees = 360 + target_degrees;
-    } else if (target_degrees > 360) {
-        target_degrees = target_degrees - 360;
+    // set target heading to positive if necessary
+    float target_heading = current_heading + degrees_to_turn;
+    if (target_heading < 0) {
+        target_heading += 360;
+    } else if (target_heading > 360) {
+        target_heading -= 360;
     }
 
-    cout << "Current heading: " << current_degrees << " target: " << target_degrees << ".\n";
-//    printf("Current & Target heading: %d, %d\n", current_degrees, target_degrees);
+    bool still_turning = true;
+
+    cout << "Current heading: " << current_heading << " target: " << target_heading << ".\n";
 
     Walking::GetInstance()->LoadINISettings(ini);
     linuxMotionTimer.Start();
@@ -153,24 +155,50 @@ void turn(int degrees_to_turn)
     Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
     Walking::GetInstance()->Start();
 
-    while ((current_degrees < (target_degrees - 2)) || (current_degrees > (target_degrees + 2)))
+    while (still_turning)
     {
-        // update current degrees
+        // update current heading
         compass.updateData();
-        current_degrees = floor(compass.getHeadingDegrees());
-        cout << "Current heading: " << current_degrees << "\n";
+        current_heading = floor(compass.getHeadingDegrees());
+        cout << "Current heading: " << current_heading << "\n";
 
         // check if we've fallen
         if (MotionStatus::FALLEN != STANDUP)
         {
             Walking::GetInstance()->Stop();
             cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
-            usleep(10000);
+            usleep(10 * 1000);
             stand_up(MotionStatus::FALLEN);
-            usleep(10000);
+            usleep(10 * 1000);
             Walking::GetInstance()->Start();
         }
-        usleep(500000);
+
+        // determine whether or not we need to keep turning
+        if (direction > 0) {
+            // turning clockwise
+            if (target_heading < initial_heading) {
+                // have to cross 360
+                if (current_heading < initial_heading && current_heading > target_heading) {
+                    still_turning = false;
+                }
+            } else if (current_heading > target_heading) { // not crossing 360
+                still_turning = false;
+            }
+        } else {
+            // turning counterclockwise
+            if (target_heading > initial_heading) {
+                // have to cross 0
+                if (current_heading > initial_heading && current_heading < target_heading) {
+                    still_turning = false;
+                }
+            } else if (current_heading > target_heading) { // not crossing 0
+                still_turning = false;
+            }
+        }
+
+        // sleep 500mS
+        usleep(500 * 1000);
+
     }
 
     Walking::GetInstance()->Stop();
