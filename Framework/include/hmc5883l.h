@@ -77,8 +77,9 @@ namespace Robot
             float getheading() { return headingX; }
             float getHeadingY() { return headingY; }
 
-//            virtual ~HMC5883L();
+            //virtual ~HMC5883L();
             ~HMC5883L();
+            HMC5883L();
 
             static HMC5883L* GetInstance() { return m_UniqueInstance; }
 
