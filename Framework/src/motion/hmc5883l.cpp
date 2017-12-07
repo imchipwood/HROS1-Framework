@@ -287,7 +287,7 @@ void HMC5883L::calibrate() {
 //}
 
 // Main program
-/*
+
 int main(int argc, char **argv)
 {
     HMC5883L compass;
@@ -322,6 +322,6 @@ int main(int argc, char **argv)
     fclose(fp);
     return 0;
 }
-*/
+
 
 #endif //_HMC5883L_C_
