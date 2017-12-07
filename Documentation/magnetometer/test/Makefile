@@ -11,7 +11,7 @@ TARGET = compass
 
 CC = g++
 
-SOURCES = hmc5883l.cpp
+SOURCES = hmc5883l_test.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 
 $(TARGET): $(OBJECTS)
