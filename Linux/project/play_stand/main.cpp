@@ -59,6 +59,15 @@ minIni* ini;
 void play_script(void);
 
 
+// Function that calls correct motion to stand based on current fallen direction
+void stand_up(int direction) {
+    if (direction == FORWARD) {
+        motion(STANDUP_FACE);
+    } else if (direction == BACKWARD) {
+        motion(STANDUP_BACK);
+    }
+}
+
 void motion(int page_num){
 
     printf("playing ");
@@ -148,10 +157,16 @@ void turn(int degrees_to_turn){
         printf("Current heading: %d\n", current_degrees);
 
         // check if we've fallen
-        while (MotionStatus::FALLEN != STANDUP)
-        {
+//        while (MotionStatus::FALLEN != STANDUP)
+//        {
+//            Walking::GetInstance()->Stop();
+//            stand_up(MotionStatus::FALLEN);
+//            Walking::GetInstance()->Start();
+//        }
+        if (MotionStatus::FALLEN != STANDUP) {
             Walking::GetInstance()->Stop();
-            stand_up(MotionStatus::FALLEN);
+            cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
+//            stand_up(MotionStatus::FALLEN);
             Walking::GetInstance()->Start();
         }
     }
@@ -213,15 +228,6 @@ void turnCompass(char *compass_direction[]) {
     linuxMotionTimer.Stop();
     printf(" Done\n");
 
-}
-
-// Function that calls correct motion to stand based on current fallen direction
-void stand_up(int direction) {
-    if (direction == FORWARD) {
-        motion(STANDUP_FACE);
-    } else if (direction == BACKWARD) {
-        motion(STANDUP_BACK);
-    }
 }
 
 void change_current_dir()
