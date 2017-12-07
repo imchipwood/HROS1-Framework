@@ -199,7 +199,6 @@ int main(int argc, char *argv[])
     int  input2;
     int  sec = 0;
     int  sign;
-    int  degree;
     int  prev_page = 0;
 	
 	ifstream script;

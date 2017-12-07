@@ -8,8 +8,6 @@
 #define PROGRAM_VERSION "v1.00"
 #define SCREEN_COL      35
 
-int indexPage = 1;
-
 // pages for standup motions
 #define STANDUP_FACE 10
 #define STANDUP_BACK 20

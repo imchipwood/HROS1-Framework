@@ -11,6 +11,7 @@ using namespace Robot;
 
 extern LinuxMotionTimer linuxMotionTimer;
 
+int indexPage = 1;
 Action::PAGE Page;
 //Action::STEP Step;
 
