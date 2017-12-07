@@ -27,38 +27,8 @@
 
 namespace Robot
 {
-    class HMC5883L {
-
-        public:
-            short getX();
-            short getY();
-            short getZ();
-
-            float getAngle();
-            float getScaledAngle();
-            float getHeading();
-            float getHeadingDegrees();
-            float getHeadingMinutes();
-
-            void initializeHMC5883L();
-
-            void updateActualHeading(float roll, float pitch);
-
-            float getheading() { return headingX; }
-            float getHeadingY() { return headingY; }
-
-            virtual ~HMC5883L();
-
-            static HMC5883L* GetInstance() { return m_UniqueInstance; }
-
-            void updateData();
-            void calibrate();
-
-			//void LoadINISettings(minIni* ini);
-			//void LoadINISettings(minIni* ini, const std::string &section);
-			//void SaveINISettings(minIni* ini);
-			//void SaveINISettings(minIni* ini, const std::string &section);
-
+    class HMC5883L
+    {
         private:
             static HMC5883L* m_UniqueInstance;
 
@@ -88,6 +58,37 @@ namespace Robot
 
             void selectDevice(int fd, int addr, char *name);
             void writeToDevice(int fd, int reg, int val);
+
+        public:
+            short getX();
+            short getY();
+            short getZ();
+
+            float getAngle();
+            float getScaledAngle();
+            float getHeading();
+            float getHeadingDegrees();
+            float getHeadingMinutes();
+
+            void initializeHMC5883L();
+
+            void updateActualHeading(float roll, float pitch);
+
+            float getheading() { return headingX; }
+            float getHeadingY() { return headingY; }
+
+//            virtual ~HMC5883L();
+            ~HMC5883L();
+
+            static HMC5883L* GetInstance() { return m_UniqueInstance; }
+
+            void updateData();
+            void calibrate();
+
+			//void LoadINISettings(minIni* ini);
+			//void LoadINISettings(minIni* ini, const std::string &section);
+			//void SaveINISettings(minIni* ini);
+			//void SaveINISettings(minIni* ini, const std::string &section);
 
     };
 }
