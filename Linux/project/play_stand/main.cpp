@@ -39,7 +39,7 @@
 #include <libgen.h>
 #include "standup.h"
 #include "mjpg_streamer.h"
-#include "hmc5883l.h"
+//#include "hmc5883l.h"
 #include <iostream>
 #include <fstream>
 #include <math.h>
@@ -50,7 +50,7 @@
 using namespace std;
 using namespace Robot;
 
-HMC5883L compass;
+//HMC5883L compass;
 
 LinuxMotionTimer linuxMotionTimer;
 LinuxArbotixPro linux_arbotixpro("/dev/ttyUSB0");
@@ -117,116 +117,116 @@ void walk(int direction, int second){
 }
 
 void turn(int degrees_to_turn){
-    printf("turning...\t");
-    cout << "Turning...\n";
-
-    compass.updateData();
-    float initial_degrees = floor(compass.getHeadingDegrees());
-    float current_degrees = initial_degrees;
-
-    int direction = 1;
-    if (degrees_to_turn < 0)
-        direction = -1;
-
-    // figure out target degrees
-    float target_degrees = current_degrees + degrees_to_turn;
-    if (target_degrees < 0) {
-        target_degrees = 360 + target_degrees;
-    } else if (target_degrees > 360) {
-        target_degrees = target_degrees - 360;
-    }
-
-    cout << "Current heading: " << current_degrees << " target: " << target_degrees << ".\n";
-//    printf("Current & Target heading: %d, %d\n", current_degrees, target_degrees);
-
-    Walking::GetInstance()->LoadINISettings(ini);
-    linuxMotionTimer.Start();
-    MotionManager::GetInstance()->AddModule((MotionModule*)Walking::GetInstance());
-    MotionManager::GetInstance()->ResetGyroCalibration();
-    Walking::GetInstance()->X_OFFSET = -4;
-    Walking::GetInstance()->Y_OFFSET += 5;
-    Walking::GetInstance()->A_MOVE_AMPLITUDE = 23 * direction;
-    Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
-    Walking::GetInstance()->Start();
-
-    while ((current_degrees < (target_degrees - 2)) && (current_degrees > (target_degrees + 2)))
-    {
-        // update current degrees
-        compass.updateData();
-        current_degrees = floor(compass.getHeadingDegrees());
-        printf("Current heading: %d\n", current_degrees);
-
-        // check if we've fallen
-//        while (MotionStatus::FALLEN != STANDUP)
-//        {
+//    printf("turning...\t");
+//    cout << "Turning...\n";
+//
+//    compass.updateData();
+//    float initial_degrees = floor(compass.getHeadingDegrees());
+//    float current_degrees = initial_degrees;
+//
+//    int direction = 1;
+//    if (degrees_to_turn < 0)
+//        direction = -1;
+//
+//    // figure out target degrees
+//    float target_degrees = current_degrees + degrees_to_turn;
+//    if (target_degrees < 0) {
+//        target_degrees = 360 + target_degrees;
+//    } else if (target_degrees > 360) {
+//        target_degrees = target_degrees - 360;
+//    }
+//
+//    cout << "Current heading: " << current_degrees << " target: " << target_degrees << ".\n";
+////    printf("Current & Target heading: %d, %d\n", current_degrees, target_degrees);
+//
+//    Walking::GetInstance()->LoadINISettings(ini);
+//    linuxMotionTimer.Start();
+//    MotionManager::GetInstance()->AddModule((MotionModule*)Walking::GetInstance());
+//    MotionManager::GetInstance()->ResetGyroCalibration();
+//    Walking::GetInstance()->X_OFFSET = -4;
+//    Walking::GetInstance()->Y_OFFSET += 5;
+//    Walking::GetInstance()->A_MOVE_AMPLITUDE = 23 * direction;
+//    Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
+//    Walking::GetInstance()->Start();
+//
+//    while ((current_degrees < (target_degrees - 2)) && (current_degrees > (target_degrees + 2)))
+//    {
+//        // update current degrees
+//        compass.updateData();
+//        current_degrees = floor(compass.getHeadingDegrees());
+//        printf("Current heading: %d\n", current_degrees);
+//
+//        // check if we've fallen
+////        while (MotionStatus::FALLEN != STANDUP)
+////        {
+////            Walking::GetInstance()->Stop();
+////            stand_up(MotionStatus::FALLEN);
+////            Walking::GetInstance()->Start();
+////        }
+//        if (MotionStatus::FALLEN != STANDUP) {
 //            Walking::GetInstance()->Stop();
-//            stand_up(MotionStatus::FALLEN);
+//            cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
+////            stand_up(MotionStatus::FALLEN);
 //            Walking::GetInstance()->Start();
 //        }
-        if (MotionStatus::FALLEN != STANDUP) {
-            Walking::GetInstance()->Stop();
-            cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
-//            stand_up(MotionStatus::FALLEN);
-            Walking::GetInstance()->Start();
-        }
-    }
-
-    Walking::GetInstance()->Stop();
-    Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
-    Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
-    Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
-    usleep(1000000);
-    MotionManager::GetInstance()->SetEnable(false);
-    MotionManager::GetInstance()->RemoveModule((MotionModule*)Walking::GetInstance());
-    linuxMotionTimer.Stop();
-    printf(" Done\n");
+//    }
+//
+//    Walking::GetInstance()->Stop();
+//    Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
+//    Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
+//    Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
+//    usleep(1000000);
+//    MotionManager::GetInstance()->SetEnable(false);
+//    MotionManager::GetInstance()->RemoveModule((MotionModule*)Walking::GetInstance());
+//    linuxMotionTimer.Stop();
+//    printf(" Done\n");
 }
 
 void turnCompass(char *compass_direction[]) {
-    printf("turning...\t");
-
-    compass.updateData();
-    float initial_degrees = floor(compass.getHeadingDegrees());
-    float current_degrees = initial_degrees;
-
-    float degrees_to_turn = 0;
-
-    int direction = 1;
-    if (degrees_to_turn < 0)
-        direction = -1;
-
-    // figure out target degrees
-    float target_degrees = current_degrees + degrees_to_turn;
-    if (target_degrees < 0) {
-        target_degrees = 360 + target_degrees;
-    } else if (target_degrees > 360) {
-        target_degrees = target_degrees - 360;
-    }
-
-    Walking::GetInstance()->LoadINISettings(ini);
-    linuxMotionTimer.Start();
-    MotionManager::GetInstance()->AddModule((MotionModule*)Walking::GetInstance());
-    MotionManager::GetInstance()->ResetGyroCalibration();
-    Walking::GetInstance()->X_OFFSET = -4;
-    Walking::GetInstance()->Y_OFFSET += 5;
-    Walking::GetInstance()->A_MOVE_AMPLITUDE = 23 * direction;
-    Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
-    Walking::GetInstance()->Start();
-
-    while ((current_degrees < (target_degrees - 2)) && (current_degrees > (target_degrees + 2))) {
-        compass.updateData();
-        current_degrees = floor(compass.getHeadingDegrees());
-    }
-
-    Walking::GetInstance()->Stop();
-    Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
-    Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
-    Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
-    usleep(1000000);
-    MotionManager::GetInstance()->SetEnable(false);
-    MotionManager::GetInstance()->RemoveModule((MotionModule*)Walking::GetInstance());
-    linuxMotionTimer.Stop();
-    printf(" Done\n");
+//    printf("turning...\t");
+//
+//    compass.updateData();
+//    float initial_degrees = floor(compass.getHeadingDegrees());
+//    float current_degrees = initial_degrees;
+//
+//    float degrees_to_turn = 0;
+//
+//    int direction = 1;
+//    if (degrees_to_turn < 0)
+//        direction = -1;
+//
+//    // figure out target degrees
+//    float target_degrees = current_degrees + degrees_to_turn;
+//    if (target_degrees < 0) {
+//        target_degrees = 360 + target_degrees;
+//    } else if (target_degrees > 360) {
+//        target_degrees = target_degrees - 360;
+//    }
+//
+//    Walking::GetInstance()->LoadINISettings(ini);
+//    linuxMotionTimer.Start();
+//    MotionManager::GetInstance()->AddModule((MotionModule*)Walking::GetInstance());
+//    MotionManager::GetInstance()->ResetGyroCalibration();
+//    Walking::GetInstance()->X_OFFSET = -4;
+//    Walking::GetInstance()->Y_OFFSET += 5;
+//    Walking::GetInstance()->A_MOVE_AMPLITUDE = 23 * direction;
+//    Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
+//    Walking::GetInstance()->Start();
+//
+//    while ((current_degrees < (target_degrees - 2)) && (current_degrees > (target_degrees + 2))) {
+//        compass.updateData();
+//        current_degrees = floor(compass.getHeadingDegrees());
+//    }
+//
+//    Walking::GetInstance()->Stop();
+//    Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
+//    Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
+//    Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
+//    usleep(1000000);
+//    MotionManager::GetInstance()->SetEnable(false);
+//    MotionManager::GetInstance()->RemoveModule((MotionModule*)Walking::GetInstance());
+//    linuxMotionTimer.Stop();
+//    printf(" Done\n");
 
 }
 
@@ -282,7 +282,7 @@ int main(int argc, char *argv[])
 	
 	ifstream script;
 
-	compass.initializeHMC5883L();
+//	compass.initializeHMC5883L();
 
     while(on){
 		
