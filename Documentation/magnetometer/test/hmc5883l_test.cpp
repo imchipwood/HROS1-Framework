@@ -7,6 +7,8 @@
 
 // Main program
 
+using namespace Robot;
+
 int main(int argc, char **argv)
 {
     HMC5883L compass;
