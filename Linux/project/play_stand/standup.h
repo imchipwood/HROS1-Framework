@@ -9,8 +9,8 @@
 #define SCREEN_COL      35
 
 // pages for standup motions
-#define STANDUP_FACE 10
-#define STANDUP_BACK 20
+#define STANDUP_FACE 132
+#define STANDUP_BACK 140
 
 // Printing commands
 void ClearCmd();

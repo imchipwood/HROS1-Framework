@@ -82,8 +82,14 @@ void walk(int direction, int second){
     Walking::GetInstance()->Start();
 
     for (int i = 0; i < second * 1000000; i = i + 10000) {
+        while (MotionStatus::FALLEN != STANDUP) {
+            Walking::GetInstance()->Stop();
+            stand_up(MotionStatus::FALLEN);
+            Walking::GetInstance()->Start();
+        }
         usleep(10000);
     }
+
 //    usleep(1000000 * second);
     Walking::GetInstance()->Stop();
     Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
@@ -102,6 +108,65 @@ void turn(int degrees_to_turn){
     HMC5883L::GetInstance()->updateData();
     float initial_degrees = floor(HMC5883L::GetInstance()->getHeadingDegrees());
     float current_degrees = initial_degrees;
+
+    int direction = 1;
+    if (degrees_to_turn < 0)
+        direction = -1;
+
+    // figure out target degrees
+    float target_degrees = current_degrees + degrees_to_turn;
+    if (target_degrees < 0) {
+        target_degrees = 360 + target_degrees;
+    } else if (target_degrees > 360) {
+        target_degrees = target_degrees - 360;
+    }
+    printf("Current & Target heading: %d, %d\n", current_degrees, target_degrees);
+
+    Walking::GetInstance()->LoadINISettings(ini);
+    linuxMotionTimer.Start();
+    MotionManager::GetInstance()->AddModule((MotionModule*)Walking::GetInstance());
+    MotionManager::GetInstance()->ResetGyroCalibration();
+    Walking::GetInstance()->X_OFFSET = -4;
+    Walking::GetInstance()->Y_OFFSET += 5;
+    Walking::GetInstance()->A_MOVE_AMPLITUDE = 23 * direction;
+    Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
+    Walking::GetInstance()->Start();
+
+    while ((current_degrees < (target_degrees - 2)) && (current_degrees > (target_degrees + 2)))
+    {
+        // update current degrees
+        HMC5883L::GetInstance()->updateData();
+        current_degrees = floor(HMC5883L::GetInstance()->getHeadingDegrees());
+        printf("Current heading: %d\n", current_degrees);
+
+        // check if we've fallen
+        while (MotionStatus::FALLEN != STANDUP)
+        {
+            Walking::GetInstance()->Stop();
+            stand_up(MotionStatus::FALLEN);
+            Walking::GetInstance()->Start();
+        }
+    }
+
+    Walking::GetInstance()->Stop();
+    Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
+    Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
+    Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
+    usleep(1000000);
+    MotionManager::GetInstance()->SetEnable(false);
+    MotionManager::GetInstance()->RemoveModule((MotionModule*)Walking::GetInstance());
+    linuxMotionTimer.Stop();
+    printf(" Done\n");
+}
+
+void turnCompass(char *compass_direction[]) {
+    printf("turning...\t");
+
+    HMC5883L::GetInstance()->updateData();
+    float initial_degrees = floor(HMC5883L::GetInstance()->getHeadingDegrees());
+    float current_degrees = initial_degrees;
+
+    float degrees_to_turn = 0;
 
     int direction = 1;
     if (degrees_to_turn < 0)
@@ -139,14 +204,14 @@ void turn(int degrees_to_turn){
     MotionManager::GetInstance()->RemoveModule((MotionModule*)Walking::GetInstance());
     linuxMotionTimer.Stop();
     printf(" Done\n");
+
 }
 
 // Function that calls correct motion to stand based on current fallen direction
-void stand_up(int direction)
-{
-    if (direction > 0) {
+void stand_up(int direction) {
+    if (direction == FORWARD) {
         motion(STANDUP_FACE);
-    } else if (direction < 0) {
+    } else if (direction == BACKWARD) {
         motion(STANDUP_BACK);
     }
 }
