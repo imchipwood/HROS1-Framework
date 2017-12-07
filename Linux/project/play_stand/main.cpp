@@ -126,9 +126,9 @@ void turn(int degrees_to_turn)
     float initial_degrees = floor(compass.getHeadingDegrees());
     float current_degrees = initial_degrees;
 
-    int direction = 1;
+    int direction = -1;
     if (degrees_to_turn < 0)
-        direction = -1;
+        direction = 1;
 
     // figure out target degrees
     float target_degrees = current_degrees + degrees_to_turn;
@@ -146,8 +146,8 @@ void turn(int degrees_to_turn)
     MotionManager::GetInstance()->AddModule((MotionModule*)Walking::GetInstance());
     MotionManager::GetInstance()->SetEnable(true);
     MotionManager::GetInstance()->ResetGyroCalibration();
-    Walking::GetInstance()->X_OFFSET = -4;
-    Walking::GetInstance()->Y_OFFSET += 5;
+    Walking::GetInstance()->X_OFFSET = -2;
+    Walking::GetInstance()->Y_OFFSET += 3;
     Walking::GetInstance()->A_MOVE_AMPLITUDE = 23 * direction;
     Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
     Walking::GetInstance()->Start();
