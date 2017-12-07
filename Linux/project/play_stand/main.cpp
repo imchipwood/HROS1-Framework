@@ -39,6 +39,7 @@
 #include <libgen.h>
 #include "standup.h"
 #include "mjpg_streamer.h"
+#include "hmc5883l.h"
 #include <iostream>
 #include <fstream>
 
@@ -97,6 +98,7 @@ void walk(int direction, int second){
 void turn(int degrees_to_turn){
     printf("turning...\t");
 
+
     float initial_degrees = floor(HMC5883L::GetInstance()->getHeadingDegrees());
     float current_degrees = initial_degrees;
 
@@ -115,7 +117,6 @@ void turn(int degrees_to_turn){
     Walking::GetInstance()->LoadINISettings(ini);
     linuxMotionTimer.Start();
     MotionManager::GetInstance()->AddModule((MotionModule*)Walking::GetInstance());
-    MotionManager::GetInstance()->SetEnable(true);
     MotionManager::GetInstance()->ResetGyroCalibration();
     Walking::GetInstance()->X_OFFSET = -4;
     Walking::GetInstance()->Y_OFFSET += 5;
