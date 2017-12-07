@@ -11,16 +11,6 @@ using namespace Robot;
 
 extern LinuxMotionTimer linuxMotionTimer;
 
-int Col = PARAM_COL;
-int Row = WALKING_MODE_ROW;
-int Old_Col;
-int Old_Row;
-bool bBeginCommandMode = false;
-bool bEdited = false;
-int indexPage = 1;
-Action::PAGE Page;
-Action::STEP Step;
-
 // pages for standup motions
 #define STANDUP_FACE 10
 #define STANDUP_BACK 20

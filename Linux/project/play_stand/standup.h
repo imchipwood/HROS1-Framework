@@ -9,10 +9,7 @@
 
 void PlayCmd(Robot::ArbotixPro * arbotixpro, int pageNum);
 
-
+// Function that calls correct motion to stand based on current fallen direction
 void stand_up(int direction);
-{
-
-}
 
 #endif
