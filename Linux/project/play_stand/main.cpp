@@ -59,15 +59,6 @@ minIni* ini;
 void play_script(void);
 
 
-// Function that calls correct motion to stand based on current fallen direction
-void stand_up(int direction) {
-    if (direction == FORWARD) {
-        motion(STANDUP_FACE);
-    } else if (direction == BACKWARD) {
-        motion(STANDUP_BACK);
-    }
-}
-
 void motion(int page_num){
 
     printf("playing ");
@@ -77,6 +68,15 @@ void motion(int page_num){
     linuxMotionTimer.Stop();
     PlayCmd(&arbotixpro, page_num);
     MotionManager::GetInstance()->RemoveModule((MotionModule*)Action::GetInstance());
+}
+
+// Function that calls correct motion to stand based on current fallen direction
+void stand_up(int direction) {
+    if (direction == FORWARD) {
+        motion(STANDUP_FACE);
+    } else if (direction == BACKWARD) {
+        motion(STANDUP_BACK);
+    }
 }
 
 
