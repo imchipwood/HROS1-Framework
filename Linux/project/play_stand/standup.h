@@ -14,17 +14,14 @@
 void PlayCmd(Robot::ArbotixPro * arbotixpro, int pageNum);
 
 
-
 void stand_up(int direction);
 {
 
-
 }
 
-int laying_down(void)'' {
+int laying_down(void) {
 
     // TODO: Check if we're laying down
-
 
     return UPRIGHT;
 }
