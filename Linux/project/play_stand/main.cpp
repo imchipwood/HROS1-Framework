@@ -85,7 +85,8 @@ void walk(int direction, int second){
 
     for (int i = 0; i < second * 1000000; i = i + 10000) {
         while (MotionStatus::FALLEN != STANDUP) {
-            printf("Robot fallen: %d", MotionStatus::FALLEN);
+            cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
+//            printf("Robot fallen: %d", MotionStatus::FALLEN);
             Walking::GetInstance()->Stop();
             stand_up(MotionStatus::FALLEN);
             Walking::GetInstance()->Start();
@@ -106,7 +107,9 @@ void walk(int direction, int second){
 }
 
 void turn(int degrees_to_turn){
-    printf("turning...\t");
+//    printf("turning...\t");
+
+    cout << "Turning...\n";
 
     compass.updateData();
     float initial_degrees = floor(compass.getHeadingDegrees());
@@ -123,7 +126,9 @@ void turn(int degrees_to_turn){
     } else if (target_degrees > 360) {
         target_degrees = target_degrees - 360;
     }
-    printf("Current & Target heading: %d, %d\n", current_degrees, target_degrees);
+
+    cout << "Current heading: " << current_degrees << " target: " << target_degrees << ".\n";
+//    printf("Current & Target heading: %d, %d\n", current_degrees, target_degrees);
 
     Walking::GetInstance()->LoadINISettings(ini);
     linuxMotionTimer.Start();
