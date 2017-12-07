@@ -92,16 +92,17 @@ void walk(int direction, int second){
     Walking::GetInstance()->X_MOVE_AMPLITUDE = direction * 10;
     Walking::GetInstance()->Start();
 
-    for (int i = 0; i < second * 1000000; i = i + 10000) {
+    for (int i = 0; i < second; i++) {
         if (MotionStatus::FALLEN != STANDUP) {
             Walking::GetInstance()->Stop();
             usleep(10 * 1000);
             cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
             stand_up(MotionStatus::FALLEN);
-            usleep(10 * 1000);
+            usleep(500 * 1000);
             Walking::GetInstance()->Start();
         }
-        usleep(100 * 1000);
+        // sleep 1S
+        usleep(1000 * 1000);
     }
 
     Walking::GetInstance()->Stop();
@@ -169,6 +170,98 @@ void turn(int degrees_to_turn)
             cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
             usleep(10 * 1000);
             stand_up(MotionStatus::FALLEN);
+            usleep(500 * 1000);
+            Walking::GetInstance()->Start();
+        }
+
+        // determine whether or not we need to keep turning
+        if (direction > 0) {
+            // turning clockwise
+            if (target_heading < initial_heading) {
+                // have to cross 360
+                if (current_heading < initial_heading && current_heading > target_heading) {
+                    still_turning = false;
+                }
+            } else if (current_heading > target_heading) { // not crossing 360
+                still_turning = false;
+            }
+        } else {
+            // turning counterclockwise
+            if (target_heading > initial_heading) {
+                // have to cross 0
+                if (current_heading > initial_heading && current_heading < target_heading) {
+                    still_turning = false;
+                }
+            } else if (current_heading > target_heading) { // not crossing 0
+                still_turning = false;
+            }
+        }
+
+        // sleep 500mS
+        usleep(500 * 1000);
+
+    }
+
+    Walking::GetInstance()->Stop();
+    Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
+    Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
+    Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
+    usleep(1000 * 1000);
+    MotionManager::GetInstance()->SetEnable(false);
+    MotionManager::GetInstance()->RemoveModule((MotionModule*)Walking::GetInstance());
+    linuxMotionTimer.Stop();
+    cout << "Done turning\n";
+
+}
+
+void turnCompass(int degrees_to_turn)
+{
+
+    cout << "Turning...\n";
+
+    // get current compass heading
+    compass.updateData();
+    float initial_heading = floor(compass.getHeadingDegrees());
+    float current_heading = initial_heading;
+
+
+    float target_heading = degrees_to_turn;
+
+    // Direction to turn based on input degrees
+    int direction = 1;   // clockwise (degrees increasing)
+    if (abs(current_heading - target_heading) > 180) {
+        direction = -1;  // counterclockwise (degrees decreasing)
+    }
+
+    bool still_turning = true;
+
+    cout << "Current heading: " << current_heading << " target: " << target_heading << ".\n";
+
+    Walking::GetInstance()->LoadINISettings(ini);
+    linuxMotionTimer.Start();
+    MotionManager::GetInstance()->AddModule((MotionModule*)Walking::GetInstance());
+    MotionManager::GetInstance()->SetEnable(true);
+    MotionManager::GetInstance()->ResetGyroCalibration();
+    Walking::GetInstance()->X_OFFSET = -4;
+    Walking::GetInstance()->Y_OFFSET += 5;
+    Walking::GetInstance()->A_MOVE_AMPLITUDE = 23 * direction;
+    Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
+    Walking::GetInstance()->Start();
+
+    while (still_turning)
+    {
+        // update current heading
+        compass.updateData();
+        current_heading = floor(compass.getHeadingDegrees());
+        cout << "Current heading: " << current_heading << "\n";
+
+        // check if we've fallen
+        if (MotionStatus::FALLEN != STANDUP)
+        {
+            Walking::GetInstance()->Stop();
+            cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
+            usleep(10 * 1000);
+            stand_up(MotionStatus::FALLEN);
             usleep(10 * 1000);
             Walking::GetInstance()->Start();
         }
@@ -205,62 +298,11 @@ void turn(int degrees_to_turn)
     Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
     Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
     Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
-    usleep(1000000);
+    usleep(1000 * 1000);
     MotionManager::GetInstance()->SetEnable(false);
     MotionManager::GetInstance()->RemoveModule((MotionModule*)Walking::GetInstance());
     linuxMotionTimer.Stop();
-    printf(" Done\n");
     cout << "Done turning\n";
-
-}
-
-void turnCompass(char *compass_direction[]) {
-/*
-    printf("turning...\t");
-
-    compass.updateData();
-    float initial_degrees = floor(compass.getHeadingDegrees());
-    float current_degrees = initial_degrees;
-
-    float degrees_to_turn = 0;
-
-    int direction = 1;
-    if (degrees_to_turn < 0)
-        direction = -1;
-
-    // figure out target degrees
-    float target_degrees = current_degrees + degrees_to_turn;
-    if (target_degrees < 0) {
-        target_degrees = 360 + target_degrees;
-    } else if (target_degrees > 360) {
-        target_degrees = target_degrees - 360;
-    }
-
-    Walking::GetInstance()->LoadINISettings(ini);
-    linuxMotionTimer.Start();
-    MotionManager::GetInstance()->AddModule((MotionModule*)Walking::GetInstance());
-    MotionManager::GetInstance()->ResetGyroCalibration();
-    Walking::GetInstance()->X_OFFSET = -4;
-    Walking::GetInstance()->Y_OFFSET += 5;
-    Walking::GetInstance()->A_MOVE_AMPLITUDE = 23 * direction;
-    Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
-    Walking::GetInstance()->Start();
-
-    while ((current_degrees < (target_degrees - 2)) && (current_degrees > (target_degrees + 2))) {
-        compass.updateData();
-        current_degrees = floor(compass.getHeadingDegrees());
-    }
-
-    Walking::GetInstance()->Stop();
-    Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
-    Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
-    Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
-    usleep(1000000);
-    MotionManager::GetInstance()->SetEnable(false);
-    MotionManager::GetInstance()->RemoveModule((MotionModule*)Walking::GetInstance());
-    linuxMotionTimer.Stop();
-    printf(" Done\n");
-*/
 
 }
 
