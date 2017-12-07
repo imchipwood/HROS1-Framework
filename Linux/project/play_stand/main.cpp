@@ -72,7 +72,8 @@ void motion(int page_num){
 
 
 void walk(int direction, int second){
-//    printf("walking...\t");
+    printf("walking...\t");
+    cout << "Walking...\t";
     Walking::GetInstance()->LoadINISettings(ini);
     linuxMotionTimer.Start();
     MotionManager::GetInstance()->AddModule((MotionModule*)Walking::GetInstance());
@@ -85,10 +86,10 @@ void walk(int direction, int second){
 
     for (int i = 0; i < second * 1000000; i = i + 10000) {
         if (MotionStatus::FALLEN != STANDUP) {
+            Walking::GetInstance()->Stop();
             cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
-//            Walking::GetInstance()->Stop();
 //            stand_up(MotionStatus::FALLEN);
-//            Walking::GetInstance()->Start();
+            Walking::GetInstance()->Start();
         }
         usleep(10000);
     }
@@ -102,12 +103,12 @@ void walk(int direction, int second){
     MotionManager::GetInstance()->SetEnable(false);
     MotionManager::GetInstance()->RemoveModule((MotionModule*)Walking::GetInstance());
     linuxMotionTimer.Stop();
-//    printf(" Done\n");
+    printf(" Done\n");
+    cout << " Done\n";
 }
 
 void turn(int degrees_to_turn){
-//    printf("turning...\t");
-
+    printf("turning...\t");
     cout << "Turning...\n";
 
     compass.updateData();
