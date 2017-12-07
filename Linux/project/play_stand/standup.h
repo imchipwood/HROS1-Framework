@@ -8,6 +8,8 @@
 #define PROGRAM_VERSION "v1.00"
 #define SCREEN_COL      35
 
+int indexPage = 1;
+
 // Printing commands
 void ClearCmd();
 void PrintCmd(const char *message);
