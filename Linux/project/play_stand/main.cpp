@@ -81,7 +81,6 @@ void stand_up(int direction) {
 
 
 void walk(int direction, int second){
-    printf("walking...\t");
     cout << "Walking...\t";
     Walking::GetInstance()->LoadINISettings(ini);
     linuxMotionTimer.Start();
@@ -145,6 +144,7 @@ void turn(int degrees_to_turn)
     Walking::GetInstance()->LoadINISettings(ini);
     linuxMotionTimer.Start();
     MotionManager::GetInstance()->AddModule((MotionModule*)Walking::GetInstance());
+    MotionManager::GetInstance()->SetEnable(true);
     MotionManager::GetInstance()->ResetGyroCalibration();
     Walking::GetInstance()->X_OFFSET = -4;
     Walking::GetInstance()->Y_OFFSET += 5;
