@@ -152,7 +152,7 @@ void turn(int degrees_to_turn)
     Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
     Walking::GetInstance()->Start();
 
-    while ((current_degrees < (target_degrees - 2)) && (current_degrees > (target_degrees + 2)))
+    while ((current_degrees < (target_degrees - 2)) || (current_degrees > (target_degrees + 2)))
     {
         // update current degrees
         compass.updateData();
