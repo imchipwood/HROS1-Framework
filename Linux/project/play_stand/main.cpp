@@ -50,6 +50,8 @@
 using namespace std;
 using namespace Robot;
 
+HMC5883L compass;
+
 LinuxMotionTimer linuxMotionTimer;
 LinuxArbotixPro linux_arbotixpro("/dev/ttyUSB0");
 ArbotixPro arbotixpro(&linux_arbotixpro);
@@ -83,6 +85,7 @@ void walk(int direction, int second){
 
     for (int i = 0; i < second * 1000000; i = i + 10000) {
         while (MotionStatus::FALLEN != STANDUP) {
+            printf("Robot fallen: %d", MotionStatus::FALLEN);
             Walking::GetInstance()->Stop();
             stand_up(MotionStatus::FALLEN);
             Walking::GetInstance()->Start();
@@ -105,9 +108,8 @@ void walk(int direction, int second){
 void turn(int degrees_to_turn){
     printf("turning...\t");
 
-    HMC5883L::GetInstance()->initializeHMC5883L();
-    HMC5883L::GetInstance()->updateData();
-    float initial_degrees = floor(HMC5883L::GetInstance()->getHeadingDegrees());
+    compass.updateData();
+    float initial_degrees = floor(compass.getHeadingDegrees());
     float current_degrees = initial_degrees;
 
     int direction = 1;
@@ -136,8 +138,8 @@ void turn(int degrees_to_turn){
     while ((current_degrees < (target_degrees - 2)) && (current_degrees > (target_degrees + 2)))
     {
         // update current degrees
-        HMC5883L::GetInstance()->updateData();
-        current_degrees = floor(HMC5883L::GetInstance()->getHeadingDegrees());
+        compass.updateData();
+        current_degrees = floor(compass.getHeadingDegrees());
         printf("Current heading: %d\n", current_degrees);
 
         // check if we've fallen
@@ -163,8 +165,8 @@ void turn(int degrees_to_turn){
 void turnCompass(char *compass_direction[]) {
     printf("turning...\t");
 
-    HMC5883L::GetInstance()->updateData();
-    float initial_degrees = floor(HMC5883L::GetInstance()->getHeadingDegrees());
+    compass.updateData();
+    float initial_degrees = floor(compass.getHeadingDegrees());
     float current_degrees = initial_degrees;
 
     float degrees_to_turn = 0;
@@ -192,8 +194,8 @@ void turnCompass(char *compass_direction[]) {
     Walking::GetInstance()->Start();
 
     while ((current_degrees < (target_degrees - 2)) && (current_degrees > (target_degrees + 2))) {
-        HMC5883L::GetInstance()->updateData();
-        current_degrees = floor(HMC5883L::GetInstance()->getHeadingDegrees());
+        compass.updateData();
+        current_degrees = floor(compass.getHeadingDegrees());
     }
 
     Walking::GetInstance()->Stop();
@@ -268,6 +270,8 @@ int main(int argc, char *argv[])
     int  prev_page = 0;
 	
 	ifstream script;
+
+	compass.initializeHMC5883L();
 
     while(on){
 		
