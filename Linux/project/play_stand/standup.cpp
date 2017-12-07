@@ -21,9 +21,9 @@ Action::PAGE Page;
 
 void stand_up(int direction)
 {
-    if (direction == DOWN_FACE) {
+    if (direction > 0) {
         motion(STANDUP_FACE);
-    } else if (direction == DOWN_BACK) {
+    } else if (direction < 0) {
         motion(STANDUP_BACK);
     }
 }
