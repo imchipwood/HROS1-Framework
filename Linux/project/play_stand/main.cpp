@@ -37,7 +37,7 @@
 #include <ncurses.h>
 #include <signal.h>
 #include <libgen.h>
-#include "cmd_process.h"
+#include "standup.h"
 #include "mjpg_streamer.h"
 #include <iostream>
 #include <fstream>
