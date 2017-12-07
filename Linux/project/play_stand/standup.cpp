@@ -19,17 +19,6 @@ Action::PAGE Page;
 #define STANDUP_FACE 10
 #define STANDUP_BACK 20
 
-void stand_up(int direction)
-{
-    if (direction > 0) {
-        motion(STANDUP_FACE);
-    } else if (direction < 0) {
-        motion(STANDUP_BACK);
-    }
-}
-
-
-
 void ClearCmd()
 {
 	PrintCmd("");

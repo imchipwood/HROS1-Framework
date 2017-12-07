@@ -218,6 +218,16 @@ void turn(int degrees_to_turn){
     printf(" Done\n");
 }
 
+// Function that calls correct motion to stand based on current fallen direction
+void stand_up(int direction)
+{
+    if (direction > 0) {
+        motion(STANDUP_FACE);
+    } else if (direction < 0) {
+        motion(STANDUP_BACK);
+    }
+}
+
 void change_current_dir()
 {
     char exepath[1024] = {0};
