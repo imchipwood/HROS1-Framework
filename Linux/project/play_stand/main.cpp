@@ -157,7 +157,6 @@ void turn(int degrees_to_turn)
         // update current degrees
         compass.updateData();
         current_degrees = floor(compass.getHeadingDegrees());
-//        printf("Current heading: %d\n", current_degrees);
         cout << "Current heading: " << current_degrees << "\n";
 
         // check if we've fallen
@@ -170,6 +169,7 @@ void turn(int degrees_to_turn)
             usleep(10000);
             Walking::GetInstance()->Start();
         }
+        usleep(500000);
     }
 
     Walking::GetInstance()->Stop();
