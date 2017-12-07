@@ -9,8 +9,6 @@
 #define SCREEN_COL      35
 
 int indexPage = 1;
-Action::PAGE Page;
-//Action::STEP Step;
 
 // pages for standup motions
 #define STANDUP_FACE 10

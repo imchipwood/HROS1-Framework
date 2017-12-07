@@ -11,6 +11,8 @@ using namespace Robot;
 
 extern LinuxMotionTimer linuxMotionTimer;
 
+Action::PAGE Page;
+//Action::STEP Step;
 
 void ClearCmd()
 {
