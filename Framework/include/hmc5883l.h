@@ -2,14 +2,6 @@
 #ifndef _HMC5883L_H_
 #define _HMC5883L_H_
 
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <fcntl.h>
-//#include <string.h>
-//#include <sys/types.h>
-//#include <sys/stat.h>
-//#include "minIni.h"
-
 #ifndef M_PI
     #define M_PI 3.14159265358979323846
 #endif

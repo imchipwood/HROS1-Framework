@@ -99,7 +99,7 @@ void walk(int direction, int second){
 void turn(int degrees_to_turn){
     printf("turning...\t");
 
-
+    HMC5883L::GetInstance()->updateData();
     float initial_degrees = floor(HMC5883L::GetInstance()->getHeadingDegrees());
     float current_degrees = initial_degrees;
 
@@ -126,6 +126,7 @@ void turn(int degrees_to_turn){
     Walking::GetInstance()->Start();
 
     while ((current_degrees < (target_degrees - 2)) && (current_degrees > (target_degrees + 2))) {
+        HMC5883L::GetInstance()->updateData();
         current_degrees = floor(HMC5883L::GetInstance()->getHeadingDegrees());
     }
 
