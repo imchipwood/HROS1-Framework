@@ -98,7 +98,6 @@ void PlayCmd(ArbotixPro *arbotixpro, int pageNum)
 		}
 }
 
-
 void motion(int page_num){
 
     printf("playing ");
@@ -113,10 +112,28 @@ void motion(int page_num){
 void stand_up(int direction)
 {
     if (direction == DOWN_FACE) {
-        // TODO: play command for standing from face down
-        motion(STANDUP_FACE)
+        motion(STANDUP_FACE);
     } else if (direction == DOWN_BACK) {
-        // TODO: play command for standing from on back
-        motion(STANDUP_BACK)
+        motion(STANDUP_BACK);
     }
 }
+
+
+
+void ClearCmd()
+{
+	PrintCmd("");
+}
+
+void PrintCmd(const char *message)
+{
+	int len = strlen(message);
+	//GoToCursor(0, CMD_ROW);
+
+	printf( "] %s", message);
+	for (int i = 0; i < (SCREEN_COL - (len + 2)); i++)
+		printf(" ");
+
+	//GoToCursor(len + 2, CMD_ROW);
+}
+
