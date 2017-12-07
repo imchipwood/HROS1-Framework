@@ -78,9 +78,8 @@ void walk(int direction, int second){
     Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
     Walking::GetInstance()->X_MOVE_AMPLITUDE = direction * 10;
     Walking::GetInstance()->Start();
-    }
-    int i = 0;
-    for (i = 0; i < second * 1000000; i = i + 10000) {
+
+    for (int i = 0; i < second * 1000000; i = i + 10000) {
         usleep(10000);
     }
 //    usleep(1000000 * second);
