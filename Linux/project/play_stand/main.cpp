@@ -97,10 +97,10 @@ void walk(int direction, int second){
         if (MotionStatus::FALLEN != STANDUP) {
             Walking::GetInstance()->Stop();
             cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
-//            stand_up(MotionStatus::FALLEN);
+            stand_up(MotionStatus::FALLEN);
             Walking::GetInstance()->Start();
         }
-        usleep(10000);
+        usleep(100000);
     }
 
 //    usleep(1000000 * second);
