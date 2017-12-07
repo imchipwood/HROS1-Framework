@@ -66,6 +66,7 @@ void walk(int direction, int second){
     Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
     Walking::GetInstance()->X_MOVE_AMPLITUDE = direction * 10;
     Walking::GetInstance()->Start();
+    }
     for (int i = 0; i < second * 1000000; i = i + 10000) {
         usleep(10000);
     }
@@ -81,15 +82,23 @@ void walk(int direction, int second){
 //    printf(" Done\n");
 }
 
-void turn(int direction, int degree){
+void turn(int degrees_to_turn){
     printf("turning...\t");
-    int turn_degree;
-    if(degree < 90)
-        turn_degree = 23;
-    else
-        turn_degree = 45;
 
-    int sec = degree/(turn_degree*2.0) * 4.0;
+    float initial_degrees = floor(HMC5883L::GetInstance()->getHeadingDegrees());
+    float current_degrees = initial_degrees;
+
+    int direction = 1;
+    if (degrees_to_turn < 0)
+        direction = -1;
+
+    // figure out target degrees
+    float target_degrees = current_degrees + degrees_to_turn;
+    if (target_degrees < 0) {
+        target_degrees = 360 + target_degrees;
+    } else if (target_degrees > 360) {
+        target_degrees = target_degrees - 360;
+    }
 
     Walking::GetInstance()->LoadINISettings(ini);
     linuxMotionTimer.Start();
@@ -98,13 +107,14 @@ void turn(int direction, int degree){
     MotionManager::GetInstance()->ResetGyroCalibration();
     Walking::GetInstance()->X_OFFSET = -4;
     Walking::GetInstance()->Y_OFFSET += 5;
-    Walking::GetInstance()->A_MOVE_AMPLITUDE = turn_degree * direction;
+    Walking::GetInstance()->A_MOVE_AMPLITUDE = 23 * direction;
     Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
     Walking::GetInstance()->Start();
-    for (int i = 0; i < second * 1000000; i = i + 10000) {
-        usleep(10000);
+
+    while ((current_degrees < (target_degrees - 2)) && (current_degrees > (target_degrees + 2)) {
+        current_degrees = floor(HMC5883L::GetInstance()->getHeadingDegrees());
     }
-    //usleep(1000000 * sec);
+
     Walking::GetInstance()->Stop();
     Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
     Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
@@ -222,18 +232,8 @@ int main(int argc, char *argv[])
 						prev_page = 8;
 						motion(8);
 					}
-					
-					if(input2 < 0)
-						sign = -1;
-					else
-						sign = 1;
 
-					if(input2 * sign < 90)
-						degree = 23;
-					else
-						degree = 45;
-
-					turn(sign, sign * input2);
+					turn(input2);
 					break;
 
 				case 3: // Play RME page
