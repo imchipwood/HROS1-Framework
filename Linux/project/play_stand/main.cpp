@@ -262,7 +262,7 @@ void turnCompass(int degrees_to_turn)
             cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
             usleep(10 * 1000);
             stand_up(MotionStatus::FALLEN);
-            usleep(10 * 1000);
+            usleep(500 * 1000);
             Walking::GetInstance()->Start();
         }
 
