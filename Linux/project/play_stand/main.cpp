@@ -29,6 +29,7 @@
 	
 	Updated: 12-6-2017
 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -94,12 +95,15 @@ void walk(int direction, int second){
     Walking::GetInstance()->Start();
 
     for (int i = 0; i < second; i++) {
-        if (MotionStatus::FALLEN != STANDUP) {
+        if (MotionStatus::FALLEN != STANDUP)
+        {
             Walking::GetInstance()->Stop();
             usleep(10 * 1000);
             cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
             stand_up(MotionStatus::FALLEN);
             usleep(500 * 1000);
+            linuxMotionTimer.Start();
+            MotionManager::GetInstance()->SetEnable(true);
             Walking::GetInstance()->Start();
         }
         // sleep 1S
@@ -164,14 +168,15 @@ void turn(int degrees_to_turn)
         current_heading = floor(compass.getHeadingDegrees());
         cout << "Current heading: " << current_heading << "\n";
 
-        // check if we've fallen
         if (MotionStatus::FALLEN != STANDUP)
         {
             Walking::GetInstance()->Stop();
-            cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
             usleep(10 * 1000);
+            cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
             stand_up(MotionStatus::FALLEN);
             usleep(500 * 1000);
+            linuxMotionTimer.Start();
+            MotionManager::GetInstance()->SetEnable(true);
             Walking::GetInstance()->Start();
         }
 
