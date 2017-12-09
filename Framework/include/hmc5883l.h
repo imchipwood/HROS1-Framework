@@ -5,11 +5,11 @@
 #ifndef M_PI
     #define M_PI 3.14159265358979323846
 #endif
-
+/*
 #ifndef true
     #define true 1
 #endif
-
+*/
 #ifndef HMC5883L_I2C_ADDR
     #define HMC5883L_I2C_ADDR 0x1E
 #endif
@@ -40,8 +40,8 @@ namespace Robot
 
             float heading; // radians
             float minutes;
-            float headingX; // radians
-            float headingY; // radians
+            //float headingX; // radians
+            //float headingY; // radians
 
             float angle;
 
@@ -64,12 +64,12 @@ namespace Robot
 
             void initializeHMC5883L();
 
-            void updateActualHeading(float roll, float pitch);
+            //void updateActualHeading(float roll, float pitch);
 
-            float getheading() { return headingX; }
-            float getHeadingY() { return headingY; }
+            //float getHeadingX() { return headingX; }
+            //float getHeadingY() { return headingY; }
 
-            //virtual ~HMC5883L();
+            // constructors
             ~HMC5883L();
             HMC5883L();
 
@@ -78,10 +78,10 @@ namespace Robot
             void updateData();
             void calibrate();
 
-			//void LoadINISettings(minIni* ini);
-			//void LoadINISettings(minIni* ini, const std::string &section);
-			//void SaveINISettings(minIni* ini);
-			//void SaveINISettings(minIni* ini, const std::string &section);
+			void LoadINISettings(minIni* ini);
+			void LoadINISettings(minIni* ini, const std::string &section);
+			void SaveINISettings(minIni* ini);
+			void SaveINISettings(minIni* ini, const std::string &section);
 
     };
 }

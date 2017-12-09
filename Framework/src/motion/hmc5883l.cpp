@@ -132,7 +132,10 @@ void HMC5883L::initializeHMC5883L() {
  * That is unfortunately useless if the sensor is tilted at all.
  * updateActualHeading will calculate the actual heading based on
  * roll/pitch input from an accelerometer and/or gyro in RADIANS
+ *
+ * ENTIRELY UNTESTED SINCE ARBOTIX PRO ACCELEROMETER DATA IS UNIT-LESS...
  */
+/*
 void HMC5883L::updateActualHeading(float roll, float pitch) {
     // https://arduino.stackexchange.com/questions/19359/compute-yaw-from-magnetometer-and-accelerometer
     const float cosRoll =  cos(roll);
@@ -152,6 +155,7 @@ void HMC5883L::updateActualHeading(float roll, float pitch) {
     headingX = magX / tmp;
     headingY = -magY / tmp;
 }
+*/
 
 void HMC5883L::updateData() {
     buf[0] = 0x03;
@@ -247,44 +251,44 @@ void HMC5883L::calibrate() {
     printf("y: %d, %d\n", minY, maxY);
     printf("z: %d, %d\n", minZ, maxZ);
 }
-//
-//void HMC5883L::LoadINISettings(minIni* ini) {
-//    LoadINISettings(ini, HMC5883L_SECTION);
-//}
-//
-//void HMC5883L::LoadINISettings(minIni* ini, const std::string &section) {
-//    double value = INVALID_VALUE;
-//
-//    if ((value = ini->getd(section, "minX", INVALID_VALUE)) != INVALID_VALUE)
-//        minX = value;
-//    if ((value = ini->getd(section, "maxX", INVALID_VALUE)) != INVALID_VALUE)
-//        maxX = value;
-//
-//    if ((value = ini->getd(section, "minY", INVALID_VALUE)) != INVALID_VALUE)
-//        minY = value;
-//    if ((value = ini->getd(section, "maxY", INVALID_VALUE)) != INVALID_VALUE)
-//        maxY = value;
-//
-//    if ((value = ini->getd(section, "minZ", INVALID_VALUE)) != INVALID_VALUE)
-//        minZ = value;
-//    if ((value = ini->getd(section, "maxZ", INVALID_VALUE)) != INVALID_VALUE)
-//        maxZ = value;
-//}
-//
-//void HMC5883L::SaveINISettings(minIni* ini) {
-//    SaveINISettings(ini, HMC5883L_SECTION);
-//}
-//
-//void HMC5883L::SaveINISettings(minIni* ini, const std::string &section) {
-//    ini->put(section, "minX", minX);
-//    ini->put(section, "maxX", maxX);
-//
-//    ini->put(section, "minY", minY);
-//    ini->put(section, "maxY", maxY);
-//
-//    ini->put(section, "minZ", minZ);
-//    ini->put(section, "maxZ", maxZ);
-//}
+
+void HMC5883L::LoadINISettings(minIni* ini) {
+    LoadINISettings(ini, HMC5883L_SECTION);
+}
+
+void HMC5883L::LoadINISettings(minIni* ini, const std::string &section) {
+    double value = INVALID_VALUE;
+
+    if ((value = ini->getd(section, "minX", INVALID_VALUE)) != INVALID_VALUE)
+        minX = value;
+    if ((value = ini->getd(section, "maxX", INVALID_VALUE)) != INVALID_VALUE)
+        maxX = value;
+
+    if ((value = ini->getd(section, "minY", INVALID_VALUE)) != INVALID_VALUE)
+        minY = value;
+    if ((value = ini->getd(section, "maxY", INVALID_VALUE)) != INVALID_VALUE)
+        maxY = value;
+
+    if ((value = ini->getd(section, "minZ", INVALID_VALUE)) != INVALID_VALUE)
+        minZ = value;
+    if ((value = ini->getd(section, "maxZ", INVALID_VALUE)) != INVALID_VALUE)
+        maxZ = value;
+}
+
+void HMC5883L::SaveINISettings(minIni* ini) {
+    SaveINISettings(ini, HMC5883L_SECTION);
+}
+
+void HMC5883L::SaveINISettings(minIni* ini, const std::string &section) {
+    ini->put(section, "minX", minX);
+    ini->put(section, "maxX", maxX);
+
+    ini->put(section, "minY", minY);
+    ini->put(section, "maxY", maxY);
+
+    ini->put(section, "minZ", minZ);
+    ini->put(section, "maxZ", maxZ);
+}
 
 
 

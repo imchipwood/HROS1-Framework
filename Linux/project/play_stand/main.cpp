@@ -61,8 +61,8 @@ minIni* ini;
 void play_script(void);
 
 
-void motion(int page_num){
-
+void motion(int page_num)
+{
     printf("playing ");
     MotionManager::GetInstance()->LoadINISettings(ini);
     MotionManager::GetInstance()->SetEnable(false);
@@ -73,7 +73,8 @@ void motion(int page_num){
 }
 
 // Function that calls correct motion to stand based on current fallen direction
-void stand_up(int direction) {
+void stand_up(int direction)
+{
     if (direction == FORWARD) {
         motion(STANDUP_FACE);
     } else if (direction == BACKWARD) {
@@ -82,7 +83,8 @@ void stand_up(int direction) {
 }
 
 
-void walk(int direction, int second){
+void walk(int direction, int second)
+{
     cout << "Walking...\t";
     Walking::GetInstance()->LoadINISettings(ini);
     linuxMotionTimer.Start();
@@ -421,6 +423,7 @@ int main(int argc, char *argv[])
 	ifstream script;
 
 	compass.initializeHMC5883L();
+	compass.LoadINISettings(ini);
 
     while(on){
 		
