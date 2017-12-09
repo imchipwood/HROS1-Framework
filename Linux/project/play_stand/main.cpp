@@ -83,6 +83,12 @@ void stand_up(int direction)
         motion(STANDUP_BACK);
         cout << "Done\n";
     }
+    usleep(500 * 1000);
+    // play wlk_ready motion
+    if(prev_page != 8) {
+        prev_page = 8;
+        motion(8);
+    }
 }
 
 
