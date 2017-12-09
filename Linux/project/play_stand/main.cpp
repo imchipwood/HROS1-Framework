@@ -131,7 +131,7 @@ void turn(int degrees_to_turn)
     compass.updateData();
     float initial_heading = floor(compass.getHeadingDegrees());
     float current_heading = initial_heading;
-w
+
     // Direction to turn based on input degrees
     int direction = 1;   // clockwise (degrees increasing)
     if (degrees_to_turn < 0) {
