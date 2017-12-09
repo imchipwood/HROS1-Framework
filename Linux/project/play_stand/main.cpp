@@ -111,13 +111,14 @@ void walk(int direction, int second)
             Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
             Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
             Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
+            usleep(500 * 1000);
             MotionManager::GetInstance()->SetEnable(false);
             MotionManager::GetInstance()->RemoveModule((MotionModule*)Walking::GetInstance());
             linuxMotionTimer.Stop();
 
             // Run the stand-up motions
-            usleep(10 * 1000);
             cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
+            usleep(500 * 1000);
             stand_up(MotionStatus::FALLEN);
             usleep(500 * 1000);
 
@@ -207,13 +208,14 @@ void turn(int degrees_to_turn)
             Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
             Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
             Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
+            usleep(500 * 1000);
             MotionManager::GetInstance()->SetEnable(false);
             MotionManager::GetInstance()->RemoveModule((MotionModule*)Walking::GetInstance());
             linuxMotionTimer.Stop();
 
             // Run the stand-up motions
-            usleep(10 * 1000);
             cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
+            usleep(500 * 1000);
             stand_up(MotionStatus::FALLEN);
             usleep(500 * 1000);
 
@@ -325,13 +327,14 @@ void turnCompass(int degrees_to_turn)
             Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
             Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
             Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
+            usleep(500 * 1000);
             MotionManager::GetInstance()->SetEnable(false);
             MotionManager::GetInstance()->RemoveModule((MotionModule*)Walking::GetInstance());
             linuxMotionTimer.Stop();
 
             // Run the stand-up motions
-            usleep(10 * 1000);
             cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
+            usleep(500 * 1000);
             stand_up(MotionStatus::FALLEN);
             usleep(500 * 1000);
 
