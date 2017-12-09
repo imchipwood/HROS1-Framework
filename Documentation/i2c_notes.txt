@@ -11,3 +11,15 @@ These pins double as USART3 TX/RX pins.
 Sadly, they are used to communicate with the FT232 USB driver...
 
 NO I2C AVAILABLE ON ARBOTIX PRO :(
+
+
+
+
+
+RPI I2C setup
+https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c
+
+sudo apt-get install -y i2c-tools
+sudo raspi-config -> Advanced Options -> enable I2C
+
+sudo reboot
