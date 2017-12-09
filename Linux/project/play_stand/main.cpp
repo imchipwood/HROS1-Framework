@@ -131,7 +131,7 @@ void turn(int degrees_to_turn)
     compass.updateData();
     float initial_heading = floor(compass.getHeadingDegrees());
     float current_heading = initial_heading;
-
+w
     // Direction to turn based on input degrees
     int direction = 1;   // clockwise (degrees increasing)
     if (degrees_to_turn < 0) {
@@ -157,7 +157,7 @@ void turn(int degrees_to_turn)
     MotionManager::GetInstance()->ResetGyroCalibration();
     Walking::GetInstance()->X_OFFSET = -4;
     Walking::GetInstance()->Y_OFFSET += 5;
-    Walking::GetInstance()->A_MOVE_AMPLITUDE = 23 * direction;
+    Walking::GetInstance()->A_MOVE_AMPLITUDE = 23 * -direction;
     Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
     Walking::GetInstance()->Start();
 
