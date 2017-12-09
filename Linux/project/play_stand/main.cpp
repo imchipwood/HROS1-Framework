@@ -76,9 +76,12 @@ void motion(int page_num)
 void stand_up(int direction)
 {
     if (direction == FORWARD) {
+        cout << "Standing up from stomach...\t";
         motion(STANDUP_FACE);
     } else if (direction == BACKWARD) {
+        cout << "Standing up from back...\t";
         motion(STANDUP_BACK);
+        cout << "Done\n";
     }
 }
 
