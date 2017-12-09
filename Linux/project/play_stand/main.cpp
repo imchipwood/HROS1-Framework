@@ -249,7 +249,7 @@ void turnCompass(int degrees_to_turn)
     MotionManager::GetInstance()->ResetGyroCalibration();
     Walking::GetInstance()->X_OFFSET = -4;
     Walking::GetInstance()->Y_OFFSET += 5;
-    Walking::GetInstance()->A_MOVE_AMPLITUDE = 23 * direction;
+    Walking::GetInstance()->A_MOVE_AMPLITUDE = 23 * -direction;
     Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
     Walking::GetInstance()->Start();
 
@@ -272,26 +272,8 @@ void turnCompass(int degrees_to_turn)
         }
 
         // determine whether or not we need to keep turning
-        if (direction > 0) {
-            // turning clockwise
-            if (target_heading < initial_heading) {
-                // have to cross 360
-                if (current_heading < initial_heading && current_heading > target_heading) {
-                    still_turning = false;
-                }
-            } else if (current_heading > target_heading) { // not crossing 360
-                still_turning = false;
-            }
-        } else {
-            // turning counterclockwise
-            if (target_heading > initial_heading) {
-                // have to cross 0
-                if (current_heading > initial_heading && current_heading < target_heading) {
-                    still_turning = false;
-                }
-            } else if (current_heading > target_heading) { // not crossing 0
-                still_turning = false;
-            }
+        if (current_heading < target_heading - 5 || current_heading > target_heading + 5) {
+            still_turning = false;
         }
 
         // sleep 500mS
