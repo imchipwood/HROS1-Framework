@@ -273,6 +273,7 @@ void turnCompass(int degrees_to_turn)
 
         // determine whether or not we need to keep turning
         if (current_heading < target_heading + 5 && current_heading > target_heading - 5) {
+            cout << "Turning complete\n";
             still_turning = false;
         }
 
