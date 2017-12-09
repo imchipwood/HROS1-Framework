@@ -272,7 +272,7 @@ void turnCompass(int degrees_to_turn)
         }
 
         // determine whether or not we need to keep turning
-        if (current_heading < target_heading - 5 || current_heading > target_heading + 5) {
+        if (current_heading < target_heading + 5 || current_heading > target_heading - 5) {
             still_turning = false;
         }
 
