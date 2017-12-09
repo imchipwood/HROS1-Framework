@@ -233,9 +233,9 @@ void turnCompass(int degrees_to_turn)
     float target_heading = degrees_to_turn;
 
     // Direction to turn based on input degrees
-    int direction = 1;   // clockwise (degrees increasing)
+    int direction = -1;   // clockwise (degrees increasing)
     if (abs(current_heading - target_heading) > 180) {
-        direction = -1;  // counterclockwise (degrees decreasing)
+        direction = 1;  // counterclockwise (degrees decreasing)
     }
 
     bool still_turning = true;
