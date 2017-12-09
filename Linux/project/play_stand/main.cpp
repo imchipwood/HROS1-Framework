@@ -52,6 +52,8 @@
 using namespace std;
 using namespace Robot;
 
+#define WALK_READY_MOTION 8
+
 HMC5883L compass;
 
 LinuxMotionTimer linuxMotionTimer;
@@ -84,11 +86,8 @@ void stand_up(int direction)
         cout << "Done\n";
     }
     usleep(500 * 1000);
-    // play wlk_ready motion
-    if(prev_page != 8) {
-        prev_page = 8;
-        motion(8);
-    }
+    // Play wlk_ready motion to get ready for walking again
+    motion(WALK_READY_MOTION);
 }
 
 
