@@ -94,16 +94,38 @@ void walk(int direction, int second){
     Walking::GetInstance()->X_MOVE_AMPLITUDE = direction * 10;
     Walking::GetInstance()->Start();
 
+    // Walking loop
     for (int i = 0; i < second; i++) {
+
+        // Check if we've fallen over
         if (MotionStatus::FALLEN != STANDUP)
         {
+            // Stop walking
             Walking::GetInstance()->Stop();
+            Walking::GetInstance()->X_OFFSET = 0;
+            Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
+            Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
+            Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
+            MotionManager::GetInstance()->SetEnable(false);
+            MotionManager::GetInstance()->RemoveModule((MotionModule*)Walking::GetInstance());
+            linuxMotionTimer.Stop();
+
+            // Run the stand-up motions
             usleep(10 * 1000);
             cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
             stand_up(MotionStatus::FALLEN);
             usleep(500 * 1000);
+
+            // Resume walking
+            cout << "Resuming walking..\n";
+            Walking::GetInstance()->LoadINISettings(ini);
             linuxMotionTimer.Start();
+            MotionManager::GetInstance()->AddModule((MotionModule*)Walking::GetInstance());
             MotionManager::GetInstance()->SetEnable(true);
+            MotionManager::GetInstance()->ResetGyroCalibration();
+            Walking::GetInstance()->X_OFFSET = direction * -2;
+            Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
+            Walking::GetInstance()->X_MOVE_AMPLITUDE = direction * 10;
             Walking::GetInstance()->Start();
         }
         // sleep 1S
@@ -157,10 +179,12 @@ void turn(int degrees_to_turn)
     MotionManager::GetInstance()->ResetGyroCalibration();
     Walking::GetInstance()->X_OFFSET = -4;
     Walking::GetInstance()->Y_OFFSET += 5;
-    Walking::GetInstance()->A_MOVE_AMPLITUDE = 23 * -direction;
     Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
+    Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
+    Walking::GetInstance()->A_MOVE_AMPLITUDE = 23 * -direction;
     Walking::GetInstance()->Start();
 
+    // Turning loop
     while (still_turning)
     {
         // update current heading
@@ -168,15 +192,38 @@ void turn(int degrees_to_turn)
         current_heading = floor(compass.getHeadingDegrees());
         cout << "Current heading: " << current_heading << "\n";
 
+        // Check if we've fallen over
         if (MotionStatus::FALLEN != STANDUP)
         {
+            // Stop walking
             Walking::GetInstance()->Stop();
+            Walking::GetInstance()->X_OFFSET = 0;
+            Walking::GetInstance()->Y_OFFSET = 0;
+            Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
+            Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
+            Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
+            MotionManager::GetInstance()->SetEnable(false);
+            MotionManager::GetInstance()->RemoveModule((MotionModule*)Walking::GetInstance());
+            linuxMotionTimer.Stop();
+
+            // Run the stand-up motions
             usleep(10 * 1000);
             cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
             stand_up(MotionStatus::FALLEN);
             usleep(500 * 1000);
+
+            // Resume walking
+            cout << "Resuming walking..\n";
+            Walking::GetInstance()->LoadINISettings(ini);
             linuxMotionTimer.Start();
+            MotionManager::GetInstance()->AddModule((MotionModule*)Walking::GetInstance());
             MotionManager::GetInstance()->SetEnable(true);
+            MotionManager::GetInstance()->ResetGyroCalibration();
+            Walking::GetInstance()->X_OFFSET = -4;
+            Walking::GetInstance()->Y_OFFSET += 5;
+            Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
+            Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
+            Walking::GetInstance()->A_MOVE_AMPLITUDE = 23 * -direction;
             Walking::GetInstance()->Start();
         }
 
@@ -209,6 +256,8 @@ void turn(int degrees_to_turn)
     }
 
     Walking::GetInstance()->Stop();
+    Walking::GetInstance()->X_OFFSET = 0;
+    Walking::GetInstance()->Y_OFFSET = 0;
     Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
     Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
     Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
@@ -253,6 +302,7 @@ void turnCompass(int degrees_to_turn)
     Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
     Walking::GetInstance()->Start();
 
+    // Turning loop
     while (still_turning)
     {
         // update current heading
@@ -260,14 +310,38 @@ void turnCompass(int degrees_to_turn)
         current_heading = floor(compass.getHeadingDegrees());
         cout << "Current heading: " << current_heading << "\n";
 
-        // check if we've fallen
+        // Check if we've fallen over
         if (MotionStatus::FALLEN != STANDUP)
         {
+            // Stop walking
             Walking::GetInstance()->Stop();
-            cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
+            Walking::GetInstance()->X_OFFSET = 0;
+            Walking::GetInstance()->Y_OFFSET = 0;
+            Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
+            Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
+            Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
+            MotionManager::GetInstance()->SetEnable(false);
+            MotionManager::GetInstance()->RemoveModule((MotionModule*)Walking::GetInstance());
+            linuxMotionTimer.Stop();
+
+            // Run the stand-up motions
             usleep(10 * 1000);
+            cout << "Robot fallen " << MotionStatus::FALLEN << ".\n";
             stand_up(MotionStatus::FALLEN);
             usleep(500 * 1000);
+
+            // Resume walking
+            cout << "Resuming walking..\n";
+            Walking::GetInstance()->LoadINISettings(ini);
+            linuxMotionTimer.Start();
+            MotionManager::GetInstance()->AddModule((MotionModule*)Walking::GetInstance());
+            MotionManager::GetInstance()->SetEnable(true);
+            MotionManager::GetInstance()->ResetGyroCalibration();
+            Walking::GetInstance()->X_OFFSET = -4;
+            Walking::GetInstance()->Y_OFFSET += 5;
+            Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
+            Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
+            Walking::GetInstance()->A_MOVE_AMPLITUDE = 23 * -direction;
             Walking::GetInstance()->Start();
         }
 
