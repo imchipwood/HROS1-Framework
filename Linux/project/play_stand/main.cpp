@@ -257,7 +257,7 @@ void turn(int degrees_to_turn)
                 if (current_heading > initial_heading && current_heading < target_heading) {
                     still_turning = false;
                 }
-            } else if (current_heading > target_heading) { // not crossing 0
+            } else if (current_heading < target_heading) { // not crossing 0
                 still_turning = false;
             }
         }
@@ -467,68 +467,69 @@ int main(int argc, char *argv[])
 				cout << "Param   is : "   << input2 << endl;
 				cout << "    Status: ";
 				
-				switch(input1){
-				case 1: // Walking
-					if(prev_page != 8)
-					{
-						prev_page = 8;
-						motion(8);
-					}
-					
-					if(input2 < 0)
-						sign = -1;
-					else
-						sign = 1;
-						sec = sign * input2;
-						walk(sign, sec);
-						break;
+				switch(input1)
+				{
+                    case 1: // Walking
+                        if(prev_page != 8)
+                        {
+                            prev_page = 8;
+                            motion(8);
+                        }
 
-				case 2: // Turning
-					if(prev_page != 8)
-					{
-						prev_page = 8;
-						motion(8);
-					}
+                        if(input2 < 0)
+                            sign = -1;
+                        else
+                            sign = 1;
+                            sec = sign * input2;
+                            walk(sign, sec);
+                            break;
 
-					turn(input2);
-					break;
+                    case 2: // Turning relative degrees
+                        if(prev_page != 8)
+                        {
+                            prev_page = 8;
+                            motion(8);
+                        }
 
-				case 3: // Turning to absolute degrees
-					if(prev_page != 8)
-					{
-						prev_page = 8;
-						motion(8);
-					}
+                        turn(input2);
+                        break;
 
-					turnCompass(input2);
-					break;
+                    case 3: // Turning to absolute degrees
+                        if(prev_page != 8)
+                        {
+                            prev_page = 8;
+                            motion(8);
+                        }
 
-				case 4: // Play RME page
-					prev_page = input2;
-					motion(input2);
-					break;
-					
-				case 5: // Sleep
-					printf("Sleeping...\t");
-					usleep(input2*1000);
-					printf("Done.\n");
-					break;	
-				
-				case 6: // Play MP3
-					printf("MP3 Function not developed yet.\n");
-					break;
-					
-				case 7: // Send Midi
-					printf("Midi Function not developed yet.\n");
-					
-				case 8: // End of Script, off
-					printf("End of Script.\n");
-					script.close();
-					break;
-					
-				default:
-					perror("invalid input\n");
-					usleep(1500000);
+                        turnCompass(input2);
+                        break;
+
+                    case 4: // Play RME page
+                        prev_page = input2;
+                        motion(input2);
+                        break;
+
+                    case 5: // Sleep
+                        printf("Sleeping...\t");
+                        usleep(input2*1000);
+                        printf("Done.\n");
+                        break;
+
+                    case 6: // Play MP3
+                        printf("MP3 Function not developed yet.\n");
+                        break;
+
+                    case 7: // Send Midi
+                        printf("Midi Function not developed yet.\n");
+
+                    case 8: // End of Script, off
+                        printf("End of Script.\n");
+                        script.close();
+                        break;
+
+                    default:
+                        perror("invalid input\n");
+                        usleep(1500000);
 				}
 			}
 			
