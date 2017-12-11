@@ -1,21 +1,21 @@
 /*
 	This program will open and interpret a text file to give operations
 	to the HR-OS1 robot to perform. The text file format should be:
-	
+
 		<Command> <Param>
-		
+
 	where Command and Param are both integers. To perform a continuous
-	sequence of operations, the text file needs more than one line of 
+	sequence of operations, the text file needs more than one line of
 	commands.
-	
+
 	By default, a textfile named script.txt will automatically be read,
-	but user has the option to use a differently named textfile by 
+	but user has the option to use a differently named textfile by
 	including that file name on the commandline as an argument upon
 	starting up this program.
-	
+
 	Avoid adding comments to the script/text file.
-	
-	Commands (param interpretation):	
+
+	Commands (param interpretation):
 	1 Walk 			(seconds to walk for)
 	2 Turn			(degrees to turn)
 	3 Turn Compass  (absolute degrees to turn to)
@@ -24,9 +24,9 @@
 	6 Play MP3		**not developed yet
 	7 Send Midi		**not developed yet
 	8 Exit			*no param needed. Exit program
-	
+
 	To be used for Portland Cyber Show.
-	
+
 	Updated: 12-6-2017
 */
 
@@ -171,11 +171,14 @@ void turn(int degrees_to_turn)
         direction = -1;  // counterclockwise (degrees decreasing)
     }
 
-    // set target heading to positive if necessary
+    // Calculate relative target_heading
     float target_heading = current_heading + degrees_to_turn;
-    if (target_heading < 0) {
+
+    // Constrain target_heading to 0-359
+    while (target_heading < 0) {
         target_heading += 360;
-    } else if (target_heading > 360) {
+    }
+    while (target_heading > 359) {
         target_heading -= 360;
     }
 
@@ -292,6 +295,14 @@ void turnCompass(int degrees_to_turn)
     float current_heading = initial_heading;
 
     float target_heading = degrees_to_turn;
+
+    // Constrain target_heading to 0-359
+    while (target_heading < 0) {
+        target_heading += 360;
+    }
+    while (target_heading > 359) {
+        target_heading -= 360;
+    }
 
     // Direction to turn based on input degrees
     int direction = -1;   // clockwise (degrees increasing)
@@ -410,9 +421,9 @@ int main(int argc, char *argv[])
     ini = new minIni(INI_FILE_PATH);
     change_current_dir();
 
-    if(Action::GetInstance()->LoadFile(MOTION_FILE_PATH)) 
+    if(Action::GetInstance()->LoadFile(MOTION_FILE_PATH))
 		printf("Motions Loaded\n");
-    
+
 	//mjpg_streamer* streamer = new mjpg_streamer(0, 0);
     //httpd::ini = ini;
 
@@ -430,17 +441,17 @@ int main(int argc, char *argv[])
     int  sec = 0;
     int  sign;
     int  prev_page = 0;
-	
+
 	ifstream script;
 
 	compass.initializeHMC5883L();
 	compass.LoadINISettings(ini);
 
     while(on){
-		
+
 		system("clear"); // clear screen
 		cout << "******************** Walking and Motion Manager ********************\n";
-		
+
 		// Check to see if there is a specified file that user wants
 		// to use. Default to script.txt
 		if(argc > 1)
@@ -453,7 +464,7 @@ int main(int argc, char *argv[])
 			cout << "No text file specified. Playing default file ""script.txt"".\n\n";
 			script.open("script.txt");
 		}
-		
+
 		// If file opened successfully, start playing script
 		if (script.is_open())
 		{
@@ -461,12 +472,12 @@ int main(int argc, char *argv[])
 			{
 				script >> input1;
 				script >> input2;
-			
+
 				linuxMotionTimer.Initialize(MotionManager::GetInstance());
 				cout << "\nCommand is : " << input1 << "   |   ";
 				cout << "Param   is : "   << input2 << endl;
 				cout << "    Status: ";
-				
+
 				switch(input1)
 				{
                     case 1: // Walking
@@ -532,7 +543,7 @@ int main(int argc, char *argv[])
                         usleep(1500000);
 				}
 			}
-			
+
 			printf("\nClosing Walking and Motion Manager.\n\n");
 			exit(0);
 		}
