@@ -208,7 +208,6 @@ void MotionManager::Process()
         return;
 
     m_IsRunning = true;
-    // TODO: Add magnetometer
     // calibrate gyro sensor
     if (m_CalibrationStatus == 0 || m_CalibrationStatus == -1)
         {
@@ -314,14 +313,10 @@ void MotionManager::Process()
             if (avr < MotionStatus::FALLEN_F_LIMIT)
                 {
                     MotionStatus::FALLEN = FORWARD;
-//DEBUG:
-//printf( "I've fallen forward\r\n" );
                 }
             else if (avr > MotionStatus::FALLEN_B_LIMIT)
                 {
                     MotionStatus::FALLEN = BACKWARD;
-//DEBUG:
-//printf( "I've fallen backward\r\n" );
                 }
             else
                 MotionStatus::FALLEN = STANDUP;
