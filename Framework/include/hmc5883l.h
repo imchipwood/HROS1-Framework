@@ -7,11 +7,7 @@
 #ifndef M_PI
     #define M_PI 3.14159265358979323846
 #endif
-/*
-#ifndef true
-    #define true 1
-#endif
-*/
+
 #ifndef HMC5883L_I2C_ADDR
     #define HMC5883L_I2C_ADDR 0x1E
 #endif

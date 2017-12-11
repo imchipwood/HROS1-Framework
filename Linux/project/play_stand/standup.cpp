@@ -85,13 +85,6 @@ void PlayCmd(ArbotixPro *arbotixpro, int pageNum)
 	while (Action::GetInstance()->IsRunning() == true) {
         usleep(8000);
     }
-/*
-	while (1) {
-        if (Action::GetInstance()->IsRunning() == false)
-            break;
-        usleep(8000);
-    }
-*/
 
     // Disable the motions
 	MotionManager::GetInstance()->SetEnable(false);
